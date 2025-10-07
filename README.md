@@ -1,82 +1,79 @@
-Calculator Application with Email – Documentation
+Spring Boot Calculator Application – Documentation
 1. Project Overview
 
-This is a simple web-based calculator application developed using Spring Boot and Thymeleaf, with the additional functionality of sending calculation results to an email.
+This is a simple, modern web-based calculator built with Spring Boot and Thymeleaf.
 
 Users can perform Addition, Subtraction, Multiplication, and Division.
 
-Optional: Results can be sent to a user-provided email address.
+Single-page UI with responsive and clean design using Bootstrap.
+
+Lightweight and easy to extend.
 
 Technology Stack:
 
-Backend: Spring Boot
+Backend: Spring Boot (Java)
 
-Frontend: Thymeleaf, HTML
-
-Email Service: Spring Boot Mail (SMTP)
+Frontend: Thymeleaf + HTML + Bootstrap
 
 Build Tool: Maven
 
 2. Project Structure
-calculator-email-sb/
+calculator-app/
  ├─ src
  │   ├─ main
  │   │   ├─ java
  │   │   │   └─ com/example34/demo34/
  │   │   │       ├─ Demo34Application.java
- │   │   │       ├─ CalculatorController.java
- │   │   │       └─ EmailService.java
+ │   │   │       └─ CalculatorController.java
  │   │   └─ resources
- │   │       ├─ application.properties
  │   │       └─ templates/
- │   │           ├─ index.html
- │   │           └─ result.html
+ │   │           └─ calculator.html
  └─ pom.xml
 
 
-CalculatorController.java → Handles requests, performs calculations, and triggers email sending.
+Demo34Application.java → Main Spring Boot application class.
 
-EmailService.java → Sends email using Spring Boot Mail.
+CalculatorController.java → Handles calculation requests.
 
-index.html → Calculator input form (numbers, operation, email).
-
-result.html → Displays result and optional email confirmation.
-
-application.properties → Configures SMTP email settings.
+calculator.html → Single-page UI for user input and displaying results.
 
 3. Key Files
 3.1 CalculatorController.java
 
-@GetMapping("/") → Loads calculator form.
+@GetMapping("/") → Loads calculator page.
 
-@PostMapping("/calculate") → Calculates result and optionally sends email.
+@PostMapping("/calculate") → Performs calculation and returns same page with results.
 
-Uses Model to pass data to Thymeleaf templates.
+Handles divide by zero error inline.
 
-3.2 EmailService.java
+3.2 calculator.html
 
-Autowired with JavaMailSender.
+Uses Bootstrap for modern UI.
 
-Sends result to email using SimpleMailMessage.
+Inputs for two numbers and operation selection.
 
-3.3 Thymeleaf Templates
+Displays result and error message on the same page.
 
-index.html: User input form with fields for two numbers, operation, and optional email.
+Example snippet:
 
-result.html: Displays calculation result and optional email confirmation.
+<form th:action="@{/calculate}" method="post">
+    <input type="number" name="num1" placeholder="First number" required>
+    <input type="number" name="num2" placeholder="Second number" required>
+    <select name="operation">
+        <option value="add">Add</option>
+        <option value="sub">Subtract</option>
+        <option value="mul">Multiply</option>
+        <option value="div">Divide</option>
+    </select>
+    <button type="submit">Calculate</button>
+</form>
 
-3.4 application.properties (example)
-spring.mail.host=smtp.gmail.com
-spring.mail.port=587
-spring.mail.username=your.email@gmail.com
-spring.mail.password=YOUR_APP_PASSWORD
-spring.mail.properties.mail.smtp.auth=true
-spring.mail.properties.mail.smtp.starttls.enable=true
-app.mail.from=your.email@gmail.com
+<p th:text="'Result: ' + ${result}"></p>
+<p th:text="${error}"></p>
 
 4. How to Run
 
-Build the project:
+Build the project (optional):
 
 Right-click project → Run As → Maven Install
 
@@ -86,25 +83,25 @@ Run the application:
 Right-click Demo34Application.java → Run As → Java Application
 
 
-Open browser:
+Open browser → http://localhost:8080
 
-http://localhost:8080
+Enter numbers, select operation, and click Calculate.
 
-
-Use the calculator form, enter numbers, select operation, optionally enter email, and click Calculate.
+Result appears on the same page, errors shown inline.
 
 5. Features
 
 Basic calculator operations: Add, Subtract, Multiply, Divide
 
-Optional email sending for result
+Single-page modern UI using Bootstrap
 
-Uses Spring Boot + Thymeleaf for web interface
+Responsive design for desktop and mobile
 
-Clean folder structure for maintainability
+Error handling for invalid operations (divide by zero)
 
-6. Notes
+Lightweight and easy to extend
 
-Email functionality requires valid SMTP configuration. For Gmail, generate an App Password if using 2FA.
 
-The project is lightweight and easy to extend with more features like history tracking or advanced math operations.
+This version does not include email functionality, keeping it simple.
+
+Can be hosted on free services like Railway, Render, or Heroku to get a live URL.
