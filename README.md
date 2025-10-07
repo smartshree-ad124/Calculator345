@@ -1,82 +1,110 @@
-1. Overview
+Calculator Application with Email – Documentation
+1. Project Overview
 
-A simple calculator web application with frontend (Angular), backend (Spring Boot), and database (MySQL). It allows users to perform arithmetic operations, store calculation history, and optionally send results via email.
+This is a simple web-based calculator application developed using Spring Boot and Thymeleaf, with the additional functionality of sending calculation results to an email.
 
-2. Folder Structure
-project-root/
-├── calculator-frontend/       # Angular app (UI)
-│   ├── src/app/
-│   │   ├── components/       # Calculator UI components
-│   │   ├── services/         # HTTP service for API calls
-│   │   ├── models/           # Interfaces and data models
-│   │   └── app.module.ts
-│   └── environments/         # environment.ts and environment.prod.ts
-│
-├── calculator-backend/        # Spring Boot app (API + logic)
-│   ├── src/main/java/com/example/calculator/
-│   │   ├── controller/       # REST controllers (API endpoints)
-│   │   ├── service/          # Business logic
-│   │   ├── repository/       # JPA repositories
-│   │   ├── model/            # Entity classes (User, Calculation)
-│   │   └── CalculatorApplication.java
-│   └── src/main/resources/
-│       ├── application.properties  # DB and mail configuration
-│       └── static/ or templates/   # Optional web resources
-│
-├── database/                  # SQL scripts or migration files
-│   └── schema.sql
-│
-├── docker-compose.yml         # For container setup (MySQL + backend + frontend)
-└── README.md                  # Basic instructions
-3. Tech Stack
+Users can perform Addition, Subtraction, Multiplication, and Division.
 
-Frontend: Angular (TypeScript)
+Optional: Results can be sent to a user-provided email address.
 
-Backend: Spring Boot (Java)
+Technology Stack:
 
-Database: MySQL
+Backend: Spring Boot
 
-Email: JavaMailSender / SendGrid
+Frontend: Thymeleaf, HTML
 
-Deployment: Docker / Netlify / Render
+Email Service: Spring Boot Mail (SMTP)
 
-4. Data Flow
+Build Tool: Maven
 
-User performs calculation on Angular UI.
-
-Request sent to Spring Boot API.
-
-Backend evaluates and stores result in MySQL.
-
-Optional: backend sends result email.
-
-Angular displays result and updates history.
-
-5. Example API Endpoints
-Method	Endpoint	Description
-POST	/api/calc/evaluate	Evaluate expression
-GET	/api/calc/history	Get calculation history
-POST	/api/email/send	Send calculation email
-6. Quick Run Steps
-# Backend
-cd calculator-backend
-./mvnw spring-boot:run
+2. Project Structure
+calculator-email-sb/
+ ├─ src
+ │   ├─ main
+ │   │   ├─ java
+ │   │   │   └─ com/example34/demo34/
+ │   │   │       ├─ Demo34Application.java
+ │   │   │       ├─ CalculatorController.java
+ │   │   │       └─ EmailService.java
+ │   │   └─ resources
+ │   │       ├─ application.properties
+ │   │       └─ templates/
+ │   │           ├─ index.html
+ │   │           └─ result.html
+ └─ pom.xml
 
 
-# Frontend
-cd calculator-frontend
-npm install
-ng serve --open
+CalculatorController.java → Handles requests, performs calculations, and triggers email sending.
+
+EmailService.java → Sends email using Spring Boot Mail.
+
+index.html → Calculator input form (numbers, operation, email).
+
+result.html → Displays result and optional email confirmation.
+
+application.properties → Configures SMTP email settings.
+
+3. Key Files
+3.1 CalculatorController.java
+
+@GetMapping("/") → Loads calculator form.
+
+@PostMapping("/calculate") → Calculates result and optionally sends email.
+
+Uses Model to pass data to Thymeleaf templates.
+
+3.2 EmailService.java
+
+Autowired with JavaMailSender.
+
+Sends result to email using SimpleMailMessage.
+
+3.3 Thymeleaf Templates
+
+index.html: User input form with fields for two numbers, operation, and optional email.
+
+result.html: Displays calculation result and optional email confirmation.
+
+3.4 application.properties (example)
+spring.mail.host=smtp.gmail.com
+spring.mail.port=587
+spring.mail.username=your.email@gmail.com
+spring.mail.password=YOUR_APP_PASSWORD
+spring.mail.properties.mail.smtp.auth=true
+spring.mail.properties.mail.smtp.starttls.enable=true
+app.mail.from=your.email@gmail.com
+
+4. How to Run
+
+Build the project:
+
+Right-click project → Run As → Maven Install
 
 
-# Database
-MySQL running on localhost:3306 with schema 'calculator'
-7. Hosting
+Run the application:
 
-Frontend: Netlify or Vercel
+Right-click Demo34Application.java → Run As → Java Application
 
-Backend: Render, Railway, or AWS EC2
 
-Database: MySQL on Cloud (e.g., PlanetScale, AWS RDS)
+Open browser:
 
-End of short documentation.
+http://localhost:8080
+
+
+Use the calculator form, enter numbers, select operation, optionally enter email, and click Calculate.
+
+5. Features
+
+Basic calculator operations: Add, Subtract, Multiply, Divide
+
+Optional email sending for result
+
+Uses Spring Boot + Thymeleaf for web interface
+
+Clean folder structure for maintainability
+
+6. Notes
+
+Email functionality requires valid SMTP configuration. For Gmail, generate an App Password if using 2FA.
+
+The project is lightweight and easy to extend with more features like history tracking or advanced math operations.
